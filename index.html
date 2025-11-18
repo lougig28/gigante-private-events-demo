@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gigante – Private Events &amp; Group Dining Demo</title>
+  <style>
+    body {
+      background: #050508;
+      color: #f9fafb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
+    p {
+      margin: 0;
+    }
+    .subtitle {
+      color: #9ca3af;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 18px;
+      padding: 18px 18px 20px;
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: #020617;
+      color: #f9fafb;
+      font-size: 13px;
+    }
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+    .field {
+      margin-bottom: 14px;
+    }
+    .help {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 3px;
+    }
+    .option-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .option-row input[type="radio"],
+    .option-row input[type="checkbox"] {
+      margin-right: 8px;
+      margin-top: 2px;
+    }
+    .option-label {
+      font-weight: 500;
+    }
+    .option-desc {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .submit-row {
+      margin-top: 12px;
+    }
+    button[type="submit"] {
+      background: #22c55e;
+      color: #020617;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button[type="submit"]:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .tiny {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+    .summary-card h2 {
+      margin-bottom: 10px;
+    }
+    .summary-line {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .summary-label {
+      color: #9ca3af;
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      margin-bottom: 6px;
+    }
+    .success {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- LEFT: FORM -->
+    <div>
+      <h1>Private Events &amp; Group Dining</h1>
+      <p class="subtitle">
+        Tell us about your event and we’ll follow up with availability, menus, and next steps.
+      </p>
+
+      <div id="successMsg" class="success" style="display:none;">
+        Request submitted (demo only). Our team would follow up from here.
+      </div>
+
+      <form id="eventForm">
+        <!-- Section 1: Party Details -->
+        <div class="card">
+          <h2>1) Party Details</h2>
+
+          <div class="field">
+            <label for="eventType">Event Type*</label>
+            <select id="eventType" required>
+              <option value="">Select</option>
+              <option>Birthday</option>
+              <option>Sweet 16</option>
+              <option>Baby Shower</option>
+              <option>Bridal Shower</option>
+              <option>Engagement Party</option>
+              <option>Anniversary</option>
+              <option>Rehearsal Dinner</option>
+              <option>Wedding / After Party</option>
+              <option>Corporate Event</option>
+              <option>Holiday Party</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="eventDate">Event Date*</label>
+            <input type="date" id="eventDate" required />
+          </div>
+
+          <div class="field">
+            <label for="startTime">Preferred Start Time*</label>
+            <select id="startTime" required>
+              <option value="">Select</option>
+              <option>5:00 PM</option>
+              <option>5:30 PM</option>
+              <option>6:00 PM</option>
+              <option>6:30 PM</option>
+              <option>7:00 PM</option>
+              <option>7:30 PM</option>
+              <option>8:00 PM</option>
+              <option>8:30 PM</option>
+              <option>9:00 PM</option>
+              <option>9:30 PM</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="guests">How many guests are you planning for?*</label>
+            <input type="number" id="guests" min="2" max="120" value="10" required />
+            <div class="help">Approximate is fine — we’ll confirm final count closer to the event.</div>
+          </div>
+        </div>
+
+        <!-- Section 2: Setup Preference -->
+        <div class="card">
+          <h2>2) Setup Preference</h2>
+
+          <div class="field">
+            <div class="option-row">
+              <input type="radio" name="setup" id="setupMain" value="main" checked />
+              <div>
+                <div class="option-label">Main Dining (2–12 guests)</div>
+                <div class="option-desc">
+                  Standard tables in the main dining room. À la carte menu, <strong>no room minimum</strong>.
+                </div>
+              </div>
+            </div>
+
+            <div class="option-row">
+              <input type="radio" name="setup" id="setupPdr" value="pdr" />
+              <div>
+                <div class="option-label">Private Dining Room – PDR (15–30 guests)</div>
+                <div class="option-desc">
+                  Fully private room. Food &amp; beverage minimums typically start around:
+                  Tue–Thu from $2,500, Fri from $3,500, Sat from $4,000+.
+                </div>
+              </div>
+            </div>
+
+            <div class="option-row">
+              <input type="radio" name="setup" id="setupGroom" value="groom" />
+              <div>
+                <div class="option-label">G-Room / Large Event Space (30–60 guests)</div>
+                <div class="option-desc">
+                  Private event space. Food &amp; beverage minimums typically start around:
+                  Tue–Thu from $4,500, Fri from $6,000, Sat from $9,000+.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Menu Packages (private only) -->
+        <div class="card" id="packageSection" style="display:none;">
+          <h2>3) Menu Package (Private Events)</h2>
+
+          <div class="field">
+            <div class="option-row">
+              <input type="radio" name="package" id="pkgClassic" value="classic" checked />
+              <div>
+                <div class="option-label">Classic — $95 per guest</div>
+                <div class="option-desc">
+                  Core Gigante favorites — shared starters, mains, and dessert.
+                </div>
+              </div>
+            </div>
+            <div class="option-row">
+              <input type="radio" name="package" id="pkgSignature" value="signature" />
+              <div>
+                <div class="option-label">Signature — $135 per guest</div>
+                <div class="option-desc">
+                  Includes premium entrée upgrades and expanded starters &amp; desserts.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Bar Package (private only) -->
+        <div class="card" id="barSection" style="display:none;">
+          <h2>4) Bar Package (Private Events)</h2>
+
+          <div class="field">
+            <div class="option-row">
+              <input type="radio" name="barPkg" id="barBeerWine" value="beerwine" checked />
+              <div>
+                <div class="option-label">Beer &amp; Wine — $45 per guest (90 minutes)</div>
+              </div>
+            </div>
+            <div class="option-row">
+              <input type="radio" name="barPkg" id="barOpen" value="open" />
+              <div>
+                <div class="option-label">Open Bar — $65 per guest (90 minutes)</div>
+              </div>
+            </div>
+            <div class="option-row">
+              <input type="radio" name="barPkg" id="barPremium" value="premium" />
+              <div>
+                <div class="option-label">Premium Bar — $95 per guest (120 minutes)</div>
+              </div>
+            </div>
+            <div class="help">
+              Shots not included. Extended bar times and specialty options can be discussed with our team.
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Add-Ons (private only) -->
+        <div class="card" id="addonsSection" style="display:none;">
+          <h2>5) Optional Add-Ons</h2>
+
+          <div class="field">
+            <div class="option-row">
+              <input type="checkbox" id="addRaw" />
+              <div><span class="option-label">Raw Bar Platter – $195</span></div>
+            </div>
+            <div class="option-row">
+              <input type="checkbox" id="addSteak" />
+              <div><span class="option-label">Steak Board – $160</span></div>
+            </div>
+            <div class="option-row">
+              <input type="checkbox" id="addFries" />
+              <div><span class="option-label">Truffle/Parm Fry Board – $49</span></div>
+            </div>
+            <div class="option-row">
+              <input type="checkbox" id="addCake" />
+              <div><span class="option-label">Outside Cake Service – $25</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: Contact -->
+        <div class="card">
+          <h2>6) Contact &amp; Notes</h2>
+
+          <div class="field">
+            <label for="name">Full Name*</label>
+            <input type="text" id="name" required />
+          </div>
+
+          <div class="field">
+            <label for="phone">Mobile Number*</label>
+            <input type="tel" id="phone" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address*</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="field">
+            <label for="source">How did you hear about us?</label>
+            <select id="source">
+              <option value="">Select (optional)</option>
+              <option>Instagram</option>
+              <option>Friend / Family</option>
+              <option>Google</option>
+              <option>Return Guest</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="notes">Additional Details</label>
+            <textarea id="notes" placeholder="Tell us anything helpful (theme, budget, decor, special requests, etc.)."></textarea>
+          </div>
+        </div>
+
+        <!-- Section 7: Policy & Submit -->
+        <div class="card">
+          <h2>7) Minimums &amp; Deposit</h2>
+          <p class="help" style="margin-bottom:8px;">
+            • Main Dining: No room minimum; à la carte pricing from our regular menu. <br />
+            • Private Rooms (PDR &amp; G-Room): Food &amp; beverage minimums apply and vary by day of week. <br />
+            • Typical PDR minimums: from $2,500 (Tue–Thu), $3,500 (Fri), $4,000+ (Sat).<br />
+            • Typical G-Room minimums: from $4,500 (Tue–Thu), $6,000 (Fri), $9,000+ (Sat).<br />
+            • A 50% deposit of the minimum is required to confirm private room bookings.<br />
+            • Minimums are before tax, service, and fees. Final bill reflects actual spend if it exceeds the minimum.
+          </p>
+
+          <div class="field">
+            <div class="option-row">
+              <input type="checkbox" id="agree" />
+              <div>I understand and agree to the applicable minimums and deposit policy.</div>
+            </div>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" id="submitBtn" disabled>Submit Event Request (Demo)</button>
+            <div class="tiny">
+              Submitting this form does not guarantee a reservation. Our team will contact you to confirm details.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <div>
+      <div class="card summary-card">
+        <div class="badge" id="summaryBadge">Main Dining • À la carte</div>
+        <h2>Booking Summary</h2>
+        <div class="summary-line">
+          <span class="summary-label">Event Type:</span>
+          <span id="sumType">–</span>
+        </div>
+        <div class="summary-line">
+          <span class="summary-label">Date &amp; Time:</span>
+          <span id="sumDateTime">–</span>
+        </div>
+        <div class="summary-line">
+          <span class="summary-label">Guests:</span>
+          <span id="sumGuests">–</span>
+        </div>
+        <div class="summary-line">
+          <span class="summary-label">Setup:</span>
+          <span id="sumSetup">Main Dining</span>
+        </div>
+        <div class="summary-line" id="sumPackagesRow" style="display:none;">
+          <span class="summary-label">Package / Bar:</span>
+          <span id="sumPackages">–</span>
+        </div>
+        <div class="summary-line">
+          <span class="summary-label">Estimated Minimum:</span>
+          <span id="sumMinimum">None (à la carte)</span>
+        </div>
+        <div class="summary-line">
+          <span class="summary-label">Estimated Deposit:</span>
+          <span id="sumDeposit">None</span>
+        </div>
+        <p class="tiny" style="margin-top:10px;">
+          All figures are estimates. Final pricing depends on your menu selections, bar choices, and confirmed guest count.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("eventForm");
+    const successMsg = document.getElementById("successMsg");
+    const submitBtn = document.getElementById("submitBtn");
+    const agree = document.getElementById("agree");
+
+    const setupRadios = document.querySelectorAll("input[name='setup']");
+    const packageSection = document.getElementById("packageSection");
+    const barSection = document.getElementById("barSection");
+    const addonsSection = document.getElementById("addonsSection");
+
+    const sumBadge = document.getElementById("summaryBadge");
+    const sumType = document.getElementById("sumType");
+    const sumDateTime = document.getElementById("sumDateTime");
+    const sumGuests = document.getElementById("sumGuests");
+    const sumSetup = document.getElementById("sumSetup");
+    const sumPackagesRow = document.getElementById("sumPackagesRow");
+    const sumPackages = document.getElementById("sumPackages");
+    const sumMinimum = document.getElementById("sumMinimum");
+    const sumDeposit = document.getElementById("sumDeposit");
+
+    const eventType = document.getElementById("eventType");
+    const eventDate = document.getElementById("eventDate");
+    const startTime = document.getElementById("startTime");
+    const guests = document.getElementById("guests");
+
+    const pkgClassic = document.getElementById("pkgClassic");
+    const pkgSignature = document.getElementById("pkgSignature");
+    const barBeerWine = document.getElementById("barBeerWine");
+    const barOpen = document.getElementById("barOpen");
+    const barPremium = document.getElementById("barPremium");
+
+    function currentSetup() {
+      const checked = document.querySelector("input[name='setup']:checked");
+      return checked ? checked.value : "main";
+    }
+
+    function dayCategory(dateStr) {
+      if (!dateStr) return "weekday";
+      const d = new Date(dateStr);
+      const dow = d.getDay();
+      if (dow === 5) return "friday";
+      if (dow === 6) return "saturday";
+      return "weekday";
+    }
+
+    function updateVisibility() {
+      const setup = currentSetup();
+      if (setup === "main") {
+        packageSection.style.display = "none";
+        barSection.style.display = "none";
+        addonsSection.style.display = "none";
+        sumPackagesRow.style.display = "none";
+      } else {
+        packageSection.style.display = "block";
+        barSection.style.display = "block";
+        addonsSection.style.display = "block";
+        sumPackagesRow.style.display = "block";
+      }
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const setup = currentSetup();
+      const dateVal = eventDate.value;
+      const timeVal = startTime.value;
+      const typeVal = eventType.value || "Not specified";
+      const guestVal = guests.value || "–";
+
+      sumType.textContent = typeVal;
+      if (dateVal) {
+        sumDateTime.textContent = dateVal + (timeVal ? (" at " + timeVal) : "");
+      } else {
+        sumDateTime.textContent = timeVal ? timeVal : "–";
+      }
+      sumGuests.textContent = guestVal;
+
+      if (setup === "main") {
+        sumSetup.textContent = "Main Dining (à la carte)";
+        sumBadge.textContent = "Main Dining • À la carte";
+        sumMinimum.textContent = "None (à la carte)";
+        sumDeposit.textContent = "None";
+        return;
+      }
+
+      let roomLabel = "";
+      let minText = "";
+      let depositText = "";
+
+      const dayCat = dayCategory(dateVal);
+
+      if (setup === "pdr") {
+        roomLabel = "Private Dining Room (PDR)";
+        sumBadge.textContent = "PDR • Private Dining";
+        if (dayCat === "weekday") {
+          minText = "From $2,500 F&B (Tue–Thu)";
+          depositText = "Est. deposit from $1,250 (50%)";
+        } else if (dayCat === "friday") {
+          minText = "From $3,500 F&B (Friday)";
+          depositText = "Est. deposit from $1,750 (50%)";
+        } else {
+          minText = "From $4,000+ F&B (Saturday)";
+          depositText = "Est. deposit from $2,000+ (50%)";
+        }
+      } else {
+        roomLabel = "G-Room / Large Event Space";
+        sumBadge.textContent = "G-Room • Large Events";
+        if (dayCat === "weekday") {
+          minText = "From $4,500 F&B (Tue–Thu)";
+          depositText = "Est. deposit from $2,250 (50%)";
+        } else if (dayCat === "friday") {
+          minText = "From $6,000 F&B (Friday)";
+          depositText = "Est. deposit from $3,000 (50%)";
+        } else {
+          minText = "From $9,000+ F&B (Saturday)";
+          depositText = "Est. deposit from $4,500+ (50%)";
+        }
+      }
+
+      sumSetup.textContent = roomLabel;
+      sumMinimum.textContent = minText;
+      sumDeposit.textContent = depositText;
+
+      let pkg = pkgClassic.checked ? "Classic ($95/guest)" : "Signature ($135/guest)";
+      let bar = barBeerWine.checked
+        ? "Beer & Wine ($45/guest)"
+        : barOpen.checked
+        ? "Open Bar ($65/guest)"
+        : "Premium Bar ($95/guest)";
+      sumPackages.textContent = pkg + " + " + bar;
+    }
+
+    setupRadios.forEach(r => r.addEventListener("change", updateVisibility));
+    eventType.addEventListener("change", updateSummary);
+    eventDate.addEventListener("change", updateSummary);
+    startTime.addEventListener("change", updateSummary);
+    guests.addEventListener("input", updateSummary);
+    pkgClassic.addEventListener("change", updateSummary);
+    pkgSignature.addEventListener("change", updateSummary);
+    barBeerWine.addEventListener("change", updateSummary);
+    barOpen.addEventListener("change", updateSummary);
+    barPremium.addEventListener("change", updateSummary);
+
+    agree.addEventListener("change", function () {
+      submitBtn.disabled = !agree.checked;
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!agree.checked) return;
+      successMsg.style.display = "block";
+      setTimeout(() => {
+        successMsg.style.display = "none";
+      }, 4000);
+    });
+
+    updateVisibility();
+  </script>
+</body>
+</html>
